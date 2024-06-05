@@ -1,6 +1,6 @@
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import TacoLogo from '../assets/images/tacologotrans.png';
+import TacoLogo from '../assets/images/tacologowhite.png';
 import '../styles/mainStyle.css';
 
 export default function Header() {

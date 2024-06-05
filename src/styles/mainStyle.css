@@ -4,6 +4,10 @@
     position: relative;
 }
 
+.general-shadow {
+    text-shadow: 1px 1px 2px black;
+}
+
 .navShadow::before {
     content: '';
     position: absolute;
@@ -21,4 +25,8 @@
 .navShadow:hover::before {
     transform-origin: left;
     transform: scaleX(1);
+}
+
+body {
+    background-color: #f6c85c9d;
 }
