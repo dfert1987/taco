@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import OAuth from '../components/OAuth';
 import { Link } from 'react-router-dom';
-
-import TacoNight from '../assets/images/tacotrucknight.jpg';
+import TacoNight from '../assets/images/tacostand.jpeg';
 
 export default function ForgotPassword() {
     const [email, setEmail] = useState('');

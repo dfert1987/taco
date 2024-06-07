@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import OAuth from '../components/OAuth';
 import { Link } from 'react-router-dom';
 import { FaEyeSlash, FaEye } from 'react-icons/fa';
-import TacoNight from '../assets/images/tacotrucknight.jpg';
+import TacoNight from '../assets/images/tacostand.jpeg';
 
 export default function SignIn() {
     const [showPass, setShowPass] = useState(false);

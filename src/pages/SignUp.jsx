@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import OAuth from '../components/OAuth';
 import { Link } from 'react-router-dom';
 import { FaEyeSlash, FaEye } from 'react-icons/fa';
-import TacoNight from '../assets/images/tacotrucknight.jpg';
+import TacoNight from '../assets/images/tacostand.jpeg';
 
 export default function SignUp() {
     const [showPass, setShowPass] = useState(false);
@@ -21,6 +21,10 @@ export default function SignUp() {
         }));
     };
 
+    const onSubmit = (e) => {
+        e.preventDefault();
+    };
+
     return (
         <section>
             <h1 className='text-6xl text-center mt-6 font-bold font-bebas text-salsa'>
@@ -35,7 +39,7 @@ export default function SignUp() {
                     />
                 </div>
                 <div className='w-full md:w-[67%] lg:w-[40%] lg:ml-20'>
-                    <form>
+                    <form onSubmit={onSubmit}>
                         <input
                             type='text'
                             className='mb-6 w-full px-4 py-2 text-darkGray bg-white border-lightGrey rounded transition ease-in-out'
