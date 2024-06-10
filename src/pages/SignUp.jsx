@@ -1,8 +1,16 @@
 import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import OAuth from '../components/OAuth';
-import { Link } from 'react-router-dom';
+import {
+    getAuth,
+    createUserWithEmailAndPassword,
+    updateProfile,
+} from 'firebase/auth';
+import { serverTimestamp, setDoc, doc } from 'firebase/firestore';
+import { db } from '../firebase.config';
 import { FaEyeSlash, FaEye } from 'react-icons/fa';
 import TacoNight from '../assets/images/tacostand.jpeg';
+import { toast } from 'react-toastify';
 
 export default function SignUp() {
     const [showPass, setShowPass] = useState(false);
@@ -14,15 +22,46 @@ export default function SignUp() {
 
     const { name, email, password } = formData;
 
-    const onChange = (event) => {
+    const navigate = useNavigate();
+
+    const onChange = (e) => {
         setFormData((prevState) => ({
             ...prevState,
-            [event.target.id]: event.target.value,
+            [e.target.id]: e.target.value,
         }));
     };
 
-    const onSubmit = (e) => {
+    const onSubmit = async (e) => {
         e.preventDefault();
+        try {
+            const auth = getAuth();
+            const userCredential = await createUserWithEmailAndPassword(
+                auth,
+                email,
+                password
+            );
+
+            updateProfile(auth.currentUser, {
+                displayName: name,
+            });
+
+            const formDataCopy = { ...formData };
+            const user = userCredential.user;
+            delete formDataCopy.password;
+            formDataCopy.timestamp = serverTimestamp();
+            formDataCopy.avatar = '';
+            formDataCopy.about = '';
+            formDataCopy.age = 30;
+            formDataCopy.locationState = 'TX';
+            formDataCopy.locationCountry = 'USA';
+            formDataCopy.locationCity = 'Austin';
+            await setDoc(doc(db, 'users', user.uid), formDataCopy);
+
+            toast.success(' ¡Órale! Welcome to Taco Cartographer!');
+            navigate('/');
+        } catch (error) {
+            toast.error('Something went wrong.');
+        }
     };
 
     return (
