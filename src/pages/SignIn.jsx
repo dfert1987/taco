@@ -33,6 +33,7 @@ export default function SignIn() {
                 email,
                 password
             );
+            toast.success("Welcome back, amigo!")
             if (userCredential.user) {
                 navigate('/');
             }
