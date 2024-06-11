@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import OAuth from '../components/OAuth';
-import { Link } from 'react-router-dom';
 import { FaEyeSlash, FaEye } from 'react-icons/fa';
 import TacoNight from '../assets/images/tacostand.jpeg';
+import OAuth from '../components/OAuth';
+import { signInWithEmailAndPassword, getAuth } from 'firebase/auth';
+import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 export default function SignIn() {
     const [showPass, setShowPass] = useState(false);
@@ -13,11 +15,30 @@ export default function SignIn() {
 
     const { email, password } = formData;
 
+    const navigate = useNavigate();
+
     const onChange = (event) => {
         setFormData((prevState) => ({
             ...prevState,
             [event.target.id]: event.target.value,
         }));
+    };
+
+    const onSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const auth = getAuth();
+            const userCredential = await signInWithEmailAndPassword(
+                auth,
+                email,
+                password
+            );
+            if (userCredential.user) {
+                navigate('/');
+            }
+        } catch (error) {
+            toast.error('Incorrect email or password.');
+        }
     };
 
     return (
@@ -34,7 +55,7 @@ export default function SignIn() {
                     />
                 </div>
                 <div className='w-full md:w-[67%] lg:w-[40%] lg:ml-20'>
-                    <form>
+                    <form onSubmit={onSubmit}>
                         <input
                             type='email'
                             className='mb-6 w-full px-4 py-2 text-darkGray bg-white border-lightGrey rounded transition ease-in-out'
