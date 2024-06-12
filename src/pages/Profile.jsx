@@ -1,20 +1,28 @@
 import React, { useState } from 'react';
+import { getAuth } from 'firebase/auth';
 import TempAv from '../assets/images/tacostand.jpeg';
-import { MdLocationCity } from 'react-icons/md';
+import { useNavigate } from 'react-router-dom';
 
 export default function Profile() {
+    const auth = getAuth();
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
-        name: 'David',
-        email: 'davidj.fertitta@gmail.com',
-        about: 'I sure do love tacos.',
-        age: 30,
-        locationState: 'TX',
-        locationCountry: 'USA',
-        locationCity: 'Austin',
+        name: auth.currentUser.displayName,
+        email: auth.currentUser.email,
+        about: auth.currentUser.info,
+        locationState: auth.currentUser.locationState,
+        locationCountry: auth.currentUser.locationCountry,
+        locationCity: auth.currentUser.locationCity,
     });
+    const [changeDetails, setChangeDetails] = useState(false);
 
     const { name, email, about, locationCity, locationCountry, locationState } =
         formData;
+
+    const onLogout = () => {
+        auth.signOut();
+        navigate('/');
+    };
 
     return (
         <>
@@ -66,7 +74,7 @@ export default function Profile() {
                                     for='about'>
                                     About:
                                 </label>
-                                <input
+                                <textarea
                                     type='text'
                                     id='about'
                                     value={about}
@@ -119,8 +127,14 @@ export default function Profile() {
                                 </div>
                             </div>
                             <div className='flex mb-6 justify-between whitespace-nowrap text-sm sm:text-lg'>
-                                <p className='text-darkLettuce hover:text-lettuce transition ease-in-out duration-200 cursor-pointer'>Update Profile</p>
-                                <p className='text-salsa hover:text-beef transition ease-in-out duration-200 cursor-pointer'>Sign Out</p>
+                                <p className='text-darkLettuce hover:text-lettuce transition ease-in-out duration-200 cursor-pointer'>
+                                    Update Profile
+                                </p>
+                                <p
+                                    onClick={onLogout}
+                                    className='text-salsa hover:text-beef transition ease-in-out duration-200 cursor-pointer'>
+                                    Sign Out
+                                </p>
                             </div>
                         </form>
                     </div>
